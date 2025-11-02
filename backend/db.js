@@ -19,19 +19,12 @@ dotenv.config();
 
 const client = new MongoClient(process.env.MONGO_URI);
 const dbName = "employeeDB";
-
 let dbInstance = null;
 
 export async function connectDB() {
-  if (dbInstance) return dbInstance; // reuse the same connection if already connected
-
-  try {
-    await client.connect();
-    console.log("✅ Connected to MongoDB");
-    dbInstance = client.db(dbName);
-    return dbInstance;
-  } catch (error) {
-    console.error("❌ MongoDB connection failed:", error);
-    process.exit(1);
-  }
+  if (dbInstance) return dbInstance;
+  await client.connect();
+  console.log("✅ Connected to MongoDB");
+  dbInstance = client.db(dbName);
+  return dbInstance;
 }
